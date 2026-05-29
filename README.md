@@ -2,6 +2,11 @@
 
 Welcome to the project repository for **Citric Lin**. This repository contains a web-based interactive greeting dashboard and a simple Python Tkinter window script.
 
+## 🚀 Live Demo
+
+You can view the live interactive greeting dashboard here:
+👉 **[https://citriclin0422.github.io/L2-DIC1-github/](https://citriclin0422.github.io/L2-DIC1-github/)**
+
 ## Repository Contents
 
 ### 1. Interactive Greeting Dashboard (`index.html`)
