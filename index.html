@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greeting Card - Citric Lin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0f14;
+            --card-bg: rgba(22, 28, 45, 0.6);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-1: #6366f1;
+            --accent-2: #a855f7;
+            --accent-3: #ec4899;
+            --glow-1: rgba(99, 102, 241, 0.15);
+            --glow-2: rgba(168, 85, 247, 0.15);
+        }
+
+        [data-theme="emerald"] {
+            --accent-1: #10b981;
+            --accent-2: #06b6d4;
+            --accent-3: #3b82f6;
+            --glow-1: rgba(16, 185, 129, 0.15);
+            --glow-2: rgba(6, 182, 212, 0.15);
+        }
+
+        [data-theme="amber"] {
+            --accent-1: #f59e0b;
+            --accent-2: #ef4444;
+            --accent-3: #ec4899;
+            --glow-1: rgba(245, 158, 11, 0.15);
+            --glow-2: rgba(239, 68, 68, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient background glow effects */
+        .ambient-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .glow-sphere {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.8;
+            mix-blend-mode: screen;
+            transition: all 0.8s ease;
+        }
+
+        .glow-sphere-1 {
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, var(--glow-1) 0%, rgba(0,0,0,0) 70%);
+            top: -10vw;
+            left: -10vw;
+            animation: float 20s infinite alternate;
+        }
+
+        .glow-sphere-2 {
+            width: 45vw;
+            height: 45vw;
+            background: radial-gradient(circle, var(--glow-2) 0%, rgba(0,0,0,0) 70%);
+            bottom: -15vw;
+            right: -10vw;
+            animation: float 25s infinite alternate-reverse;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            100% {
+                transform: translate(5vw, 5vw) scale(1.1);
+            }
+        }
+
+        /* Container card with Glassmorphism */
+        .card {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 520px;
+            padding: 3rem 2.5rem;
+            border-radius: 24px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: border-color 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Welcome Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 16px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeIn 1.5s ease;
+        }
+
+        .badge-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-1);
+            border-radius: 50%;
+            margin-right: 8px;
+            box-shadow: 0 0 10px var(--accent-1);
+            transition: background-color 0.5s ease, box-shadow 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Greeting details */
+        .greeting-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .name-highlight {
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 50%, var(--accent-3) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            transition: all 0.5s ease;
+        }
+
+        .sub-greeting {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            font-weight: 300;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Clock and date component */
+        .time-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-display {
+            font-size: 3.5rem;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.03em;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(to bottom, #ffffff 60%, #cbd5e1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .time-seconds {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-left: 2px;
+        }
+
+        .date-display {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            letter-spacing: 0.02em;
+        }
+
+        /* Interaction panel */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 1rem;
+        }
+
+        .theme-btn {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-btn:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.15);
+            color: var(--text-primary);
+            transform: translateY(-2px);
+        }
+
+        .theme-btn:active {
+            transform: translateY(0);
+        }
+
+        .theme-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .theme-dot.default { background-color: #6366f1; }
+        .theme-dot.emerald { background-color: #10b981; }
+        .theme-dot.amber { background-color: #f59e0b; }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 2rem 1.5rem;
+            }
+            .greeting-title {
+                font-size: 1.8rem;
+            }
+            .time-display {
+                font-size: 2.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-bg">
+        <div class="glow-sphere glow-sphere-1"></div>
+        <div class="glow-sphere glow-sphere-2"></div>
+    </div>
+
+    <main class="card">
+        <div class="badge">
+            <span class="badge-dot"></span>
+            Live Dashboard
+        </div>
+
+        <h1 class="greeting-title">
+            Hello, my name is <br>
+            <span class="name-highlight">Citric Lin</span>
+        </h1>
+        <p class="sub-greeting">Welcome to my personal showcase page.</p>
+
+        <div class="time-container">
+            <div class="time-display" id="time-text">00:00:00</div>
+            <div class="date-display" id="date-text">Loading date...</div>
+        </div>
+
+        <div class="controls">
+            <button class="theme-btn" onclick="setTheme('default')">
+                <span class="theme-dot default"></span> Indigo
+            </button>
+            <button class="theme-btn" onclick="setTheme('emerald')">
+                <span class="theme-dot emerald"></span> Emerald
+            </button>
+            <button class="theme-btn" onclick="setTheme('amber')">
+                <span class="theme-dot amber"></span> Amber
+            </button>
+        </div>
+    </main>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            
+            // Format time options
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let seconds = now.getSeconds();
+            
+            // Add leading zeros
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
+            
+            // Update time display
+            const timeText = document.getElementById('time-text');
+            timeText.textContent = `${hours}:${minutes}:${seconds}`;
+            
+            // Format date options
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            const dateText = document.getElementById('date-text');
+            dateText.textContent = now.toLocaleDateString(undefined, options);
+        }
+
+        // Change themes
+        function setTheme(theme) {
+            if (theme === 'default') {
+                document.documentElement.removeAttribute('data-theme');
+            } else {
+                document.documentElement.setAttribute('data-theme', theme);
+            }
+            
+            // Save preference to localStorage
+            localStorage.setItem('selected-theme', theme);
+        }
+
+        // Load saved theme on load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('selected-theme');
+            if (savedTheme) {
+                setTheme(savedTheme);
+            }
+            
+            // Initial call
+            updateClock();
+            // Update the clock every second
+            setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>
